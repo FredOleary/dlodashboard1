@@ -43,17 +43,15 @@
 }
 
 
-.SeamaSidebarItem {
-    grid-column: 1;
-    grid-row: 1 / span 3;
-    background-color: rgb(240, 0, 0 );
-}
+/*.SeamaSidebarItem {*/
+    /*grid-column: 1;*/
+    /*grid-row: 1 / span 3;*/
+    /*background-color: rgb(240, 0, 0 );*/
+/*}*/
 
 
 
 .WaterQualityChartContainer {
-    grid-column: 1;
-    grid-row:3;
     display: grid;
     grid-template-columns:  1fr 1fr ;
     grid-template-rows:  1fr 1fr ;
@@ -62,6 +60,11 @@
     padding:10px;
     max-height:100vh;
     overflow: scroll;
+}
+
+.WaterQualityFooFixer {
+    grid-column: 1;
+    grid-row:3;
 }
 
 .WaterQualityMainChartItem {
