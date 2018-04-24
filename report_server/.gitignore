@@ -6,6 +6,9 @@
 public_react
 yarn.lock
 
+# temporary files
+*.swp
+
 # misc
 .DS_Store
 
