@@ -135,9 +135,9 @@ class App extends Component {
             newWaterQuality.chlorine.datasets[0].borderColor='rgb(53, 91, 183)';
             newWaterQuality.chlorine.labels = newWaterQuality.chlorine.labels.map(function(time)
                 {return moment(time ).format("MMM Do YY")});
-            App.createGuide(newWaterQuality.chlorine.datasets, 6.0, "red", "High");
-            App.createGuide(newWaterQuality.chlorine.datasets, 2.0, "yellow", "Low");
-            App.createGuide(newWaterQuality.chlorine.datasets, 4.0, "green", "ideal");
+            App.createGuide(newWaterQuality.chlorine.datasets, 0.9, "red", "High");
+            App.createGuide(newWaterQuality.chlorine.datasets, 0.4, "yellow", "Low");
+            App.createGuide(newWaterQuality.chlorine.datasets, 0.6, "green", "ideal");
         }
         if( ! waterQuality.hasOwnProperty("tds")){
             newWaterQuality.tds = { labels: [], datasets: [ { label: "", data: [],},]}
