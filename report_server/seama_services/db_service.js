@@ -4,10 +4,12 @@ const connectionTable = {};
 const sqlConfig = {
 	host: '167.99.229.86',
 	port: '3306',
-	database: 'sema',
+	//database: 'sema',
+	database: 'sema_test1',
 	user: 'dashboard',
 	password: 'Dashboard2018'
 };
+
 
 const schema ={
 	schemaLoaded :false,

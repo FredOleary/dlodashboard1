@@ -15,6 +15,7 @@ var sema_sales = require('./routes/sema_sales');
 var sema_sales_by_channel = require('./routes/sema_sales_by_channel');
 var session = require('express-session');
 var dbService = require('./seama_services/db_service').dbService;
+var sema_customers = require('./routes/sema_customers');
 const winston = require('winston');
 
 var app = express();
@@ -57,6 +58,7 @@ app.use('/untapped/kiosks', dbService, seama_kiosks);
 app.use('/untapped/water-operations', dbService, seama_water_operations);
 app.use('/untapped/sales', dbService, sema_sales);
 app.use('/untapped/sales-by-channel', dbService, sema_sales_by_channel);
+app.use('/sema/site/customers', dbService, sema_customers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
