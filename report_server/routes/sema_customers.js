@@ -12,7 +12,7 @@ var attsToGrab = ["id", "address", "contact_name", "customer_type_id",
 const sqlSiteIdOnly = "SELECT * " +
 	"FROM customer_account " +
 	"WHERE kiosk_id = ?";
-const sqlStartDateOnly = "SELECT * " +
+const sqlBeginDateOnly = "SELECT * " +
 	"FROM customer_account " +
 	"WHERE kiosk_id = ? " +
 	"AND created_date >= ?";
@@ -20,14 +20,14 @@ const sqlEndDateOnly = "SELECT * " +
 	"FROM customer_account " +
 	"WHERE kiosk_id = ? " +
 	"AND created_date <= ?";
-const sqlStartEndDate = "SELECT * " +
+const sqlBeginEndDate = "SELECT * " +
 	"FROM customer_account " +
 	"WHERE kiosk_id = ? " +
 	"AND created_date BETWEEN ? AND ?";
-const sqlUpdateDateOnly = "SELECT * " +
+const sqlUpdatedDate = "SELECT * " +
 	"FROM customer_account " +
 	"WHERE kiosk_id = ? " +
-	"AND updated_date >= ?";
+	"AND updated_date > ?";
 //const sqlLastUpdated = "SELECT * FROM customer_account WHERE kiosk_id = ? AND ";
 
 //SELECT * FROM customer_account WHERE kiosk_id = 2 AND created_date >= "2000-01-01 01:01:01"'
@@ -53,30 +53,58 @@ router.get('/', function(req, res) {
 			res.status(400).send(errors.toString());
 		}
 		else {
-			if (req.query.hasOwnProperty("begin-date") && req.query.hasOwnProperty("end-date")) {
-				console.log("LOG: ", "Begin and End")
-				getCustomersStartEndDate(connection, req, res);
+			if (req.query.hasOwnProperty("updated-date")) {
+				let updatedDate = new Date(req.query["updated-date"]);
+				if (!isNaN(updatedDate)) {
+					getCustomers(connection, sqlUpdatedDate,
+						[req.query["site-id"], updatedDate], res);
+				}
+				else {
+					res.status(400).send("Invalid Date");
+				}
+			}
+			else if (req.query.hasOwnProperty("begin-date") && req.query.hasOwnProperty("end-date")) {
+				let beginDate = new Date(req.query["begin-date"]);
+				let endDate = new Date(req.query["end-date"]);
+				if (!isNaN(beginDate) && !isNaN(endDate)) {
+					getCustomers(connection, sqlBeginEndDate,
+						[req.query["site-id"], beginDate, endDate], res);
+				}
+				else {
+					res.status(400).send("Invalid Date");
+				}
 			}
 			else if (req.query.hasOwnProperty("begin-date")) {
-				getCustomersStartDateOnly(connection, req, res);
-				console.log("LOG: ", "Begin");
+				let beginDate = new Date(req.query["begin-date"]);
+				if (!isNaN(beginDate)) {
+					getCustomers(connection, sqlBeginDateOnly,
+						[req.query["site-id"], beginDate], res);
+				}
+				else {
+					res.status(400).send("Invalid Date");
+				}
 			}
 			else if (req.query.hasOwnProperty("end-date")) {
-				getCustomersEndDateOnly(connection, req, res);
-				console.log("LOG: ", "End");
+				let endDate = new Date(req.query["end-date"]);
+				if (!isNaN(endDate)) {
+					getCustomers(connection, sqlEndDateOnly,
+						[req.query["site-id"], endDate], res);
+				}
+				else {
+					res.status(400).send("Invalid Date");
+				}
 			}
 			else {
-				getCustomersSiteID(connection, req, res);
-				console.log("LOG: ", "Site Only");
+				getCustomers(connection, sqlSiteIdOnly, [req.query["site-id"]], res);
 			}
 
 		}
 	});
 });
 
-const getCustomersSiteID = (connection, req, res ) => {
+const getCustomers = (connection, query, params, res ) => {
 	return new Promise((resolve, reject) => {
-		connection.query(sqlSiteIdOnly, [req.query['site-id']], function(err, result) {
+		connection.query(query, params, function(err, result) {
 			if (err) {
 				semaLog.error('customers - failed', { err });
 				res.status(500).send(err.message);
@@ -110,161 +138,7 @@ const getCustomersSiteID = (connection, req, res ) => {
 			}
 		});
 	})
-}
+};
 
-
-const getCustomersStartDateOnly = (connection, req, res ) => {
-	return new Promise((resolve, reject) => {
-		connection.query(sqlStartDateOnly, [req.query['site-id'], req.query['begin-date']], function(err, result) {
-			if (err) {
-				semaLog.error('customers - failed', { err });
-				res.status(500).send(err.message);
-				reject(err);
-			}
-			else {
-				semaLog.info('customers - succeeded');
-
-				try {
-					if (Array.isArray(result) && result.length >= 1) {
-						const values = result.map(item => {
-							const toKeep = {};
-
-							for (let i = 0; i < attsToGrab.length; i++) {
-								toKeep[attsToGrab[i]] = item[attsToGrab[i]];
-							}
-							return toKeep;
-						});
-						resolve(res.json({ customers: values}));
-					} else {
-						resolve(res.json({customers: []}));
-					}
-
-
-				} catch(err) {
-					semaLog.error('customers - failed', { err });
-					res.status(500).send(err.message);
-					reject(err);
-				}
-			}
-		});
-	})
-}
-
-const getCustomersEndDateOnly = (connection, req, res ) => {
-	return new Promise((resolve, reject) => {
-		connection.query(sqlEndDateOnly, [req.query['site-id'], req.query['end-date']], function(err, result) {
-			if (err) {
-				semaLog.error('customers - failed', { err });
-				res.status(500).send(err.message);
-				reject(err);
-			}
-			else {
-				semaLog.info('customers - succeeded');
-
-				try {
-					if (Array.isArray(result) && result.length >= 1) {
-						const values = result.map(item => {
-							const toKeep = {};
-
-							for (let i = 0; i < attsToGrab.length; i++) {
-								toKeep[attsToGrab[i]] = item[attsToGrab[i]];
-							}
-							return toKeep;
-						});
-						resolve(res.json({ customers: values}));
-					} else {
-						resolve(res.json({customers: []}));
-					}
-
-
-				} catch(err) {
-					semaLog.error('customers - failed', { err });
-					res.status(500).send(err.message);
-					reject(err);
-				}
-			}
-		});
-	})
-}
-
-const getCustomersStartEndDate = (connection, req, res ) => {
-	return new Promise((resolve, reject) => {
-		connection.query(sqlStartEndDate, [req.query['site-id'], req.query['begin-date'], req.query["end-date"]], function(err, result) {
-			if (err) {
-				semaLog.error('customers - failed', { err });
-				res.status(500).send(err.message);
-				reject(err);
-			}
-			else {
-				semaLog.info('customers - succeeded');
-				console.log("LOG: worked")
-
-				try {
-					if (Array.isArray(result) && result.length >= 1) {
-						const values = result.map(item => {
-							const toKeep = {};
-
-							for (let i = 0; i < attsToGrab.length; i++) {
-								toKeep[attsToGrab[i]] = item[attsToGrab[i]];
-							}
-							return toKeep;
-						});
-						resolve(res.json({ customers: values}));
-					} else {
-						resolve(res.json({customers: []}));
-					}
-
-
-				} catch(err) {
-					semaLog.error('customers - failed', { err });
-					res.status(500).send(err.message);
-					reject(err);
-				}
-			}
-		});
-	})
-}
-
-
-const getCustomersStartDateOnly = (connection, req, res ) => {
-	return new Promise((resolve, reject) => {
-		connection.query(sqlStartDateOnly, [req.query['site-id'], req.query['begin-date']], function(err, result) {
-			if (err) {
-				semaLog.error('customers - failed', { err });
-				res.status(500).send(err.message);
-				reject(err);
-			}
-			else {
-				semaLog.info('customers - succeeded');
-
-				try {
-					if (Array.isArray(result) && result.length >= 1) {
-						const values = result.map(item => {
-							const toKeep = {};
-
-							for (let i = 0; i < attsToGrab.length; i++) {
-								toKeep[attsToGrab[i]] = item[attsToGrab[i]];
-							}
-							return toKeep;
-						});
-						resolve(res.json({ customers: values}));
-					} else {
-						resolve(res.json({customers: []}));
-					}
-
-
-				} catch(err) {
-					semaLog.error('customers - failed', { err });
-					res.status(500).send(err.message);
-					reject(err);
-				}
-			}
-		});
-	})
-}
-
-function getSQLQuery() {
-
-}
 
 module.exports = router;
