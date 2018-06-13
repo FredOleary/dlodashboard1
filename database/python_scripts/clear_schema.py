@@ -15,7 +15,7 @@ from DBClear import DBClear
 if __name__ == "__main__":
     print('Python', python_version())
 
-    dbConnection = DBConnection('167.99.229.86', 'dashboard', 'Dashboard2018', 'sema_test1')
+    dbConnection = DBConnection('167.99.229.86', 'dashboard', 'Dashboard2018', 'sema_test_brian')
     dbConnection.connect()
     connection = dbConnection.get_connection()
     #dbSchema = DBSchema(connection)

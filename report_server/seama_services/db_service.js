@@ -5,7 +5,7 @@ const sqlConfig = {
 	host: '167.99.229.86',
 	port: '3306',
 	//database: 'sema',
-	database: 'sema_test1',
+	database: 'sema_test_brian',
 	user: 'dashboard',
 	password: 'Dashboard2018'
 };
@@ -96,11 +96,11 @@ function checkExpiredSessions(req) {
 function getSQLConfig(req){
 //	if( true){
 	if( req.app.get("env") === "test"){
-		console.log( "Test environment"); // TODO Test config should not be static!!!
-		sqlConfig.host = '192.168.50.92';
-		sqlConfig.database = 'jibu1';
-		sqlConfig.user = 'fred';
-		sqlConfig.password =  'jibu1';
+		console.log( "Brian Test Environment"); // TODO Test config should not be static!!!
+		sqlConfig.host = '167.99.229.86';
+		sqlConfig.database = 'sema_test_brian';
+		sqlConfig.user = 'dashboard';
+		sqlConfig.password =  'Dashboard2018';
 	}
 	console.log("SQL host:", sqlConfig.host, "SQL database:", sqlConfig.database );
 	return sqlConfig;
