@@ -76,9 +76,9 @@ class Toolbar extends Component {
 
 	onSettings= () =>{
 		console.log("onSettings");
-		if( this.props.showScreen.screenToShow !== "settings") {
-			this.props.toolbarActions.ShowScreen("settings");
-		}
+		// if( this.props.showScreen.screenToShow !== "settings") {
+		// 	this.props.toolbarActions.ShowScreen("settings");
+		// }
 	};
 }
 
