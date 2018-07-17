@@ -4,9 +4,12 @@ chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const should = chai.should();
 
+const path = require('path');
+const dotenvPath = path.resolve('..', '.env');
+require('dotenv').config({ path: dotenvPath});
+
 process.env.NODE_ENV = 'test';  // Set environment to test
-require('dotenv').config();
-require('../bin/global_vars');
+
 
 describe('Testing health-check', function () {
 	let server;
