@@ -12,16 +12,16 @@ process.env.NODE_ENV = 'test';  // Set environment to test
 
 
 describe('Testing health-check', function () {
-	let server;
-	this.timeout(6000);
-	beforeEach( () => {
-		server = require('../bin/www' );
-	});
-	afterEach( (done) => {
-		var iAmDone = done;
-		server.close();
-		setTimeout( function(){iAmDone()}, 2000);
-	});
+	let server = require('../bin/www' );
+	// this.timeout(6000);
+	// beforeEach( () => {
+	// 	server = require('../bin/www' );
+	// });
+	// afterEach( (done) => {
+	// 	var iAmDone = done;
+	// 	server.close();
+	// 	setTimeout( function(){iAmDone()}, 2000);
+	// });
 	describe('GET /untapped/health-check', function() {
 		it('should get /untapped/health-check', function testHealthCheck(done) {
 			chai.request(server)
