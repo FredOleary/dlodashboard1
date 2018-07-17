@@ -10,7 +10,7 @@ var authenticate = require('./Utilities/authenticate');
 var findSalesByChannelId = require('./Utilities/findSalesByChannelId');
 const uuidv1 = require('uuid/v1');
 
-describe('Testing Customers API', function () {
+describe.skip('Testing Customers API', function () {
 	let server;
 	this.timeout(6000);
 	beforeEach((done) => {
