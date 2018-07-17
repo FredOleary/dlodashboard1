@@ -1,0 +1,4 @@
+language: node_js
+node_js:
+ - '9.11.2'
+script: cd report_server && yarn && yarn test
