@@ -13,7 +13,7 @@ process.env.NODE_ENV = 'test';  // Set environment to test
 
 
 describe('Testing health-check', function () {
-	let server = require('../app' );
+	let server = require('../bin/www' );
 	// this.timeout(6000);
 	// beforeEach( () => {
 	// 	server = require('../bin/www' );
