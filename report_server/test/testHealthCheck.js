@@ -7,6 +7,7 @@ const should = chai.should();
 const path = require('path');
 const dotenvPath = path.resolve('..', '.env');
 require('dotenv').config({ path: dotenvPath});
+require('../bin/global_vars');
 
 process.env.NODE_ENV = 'test';  // Set environment to test
 
