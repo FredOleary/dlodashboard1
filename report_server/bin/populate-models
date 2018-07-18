@@ -2,11 +2,13 @@
 
 const path = require('path');
 const dotenvPath = path.resolve('..', '.env');
-require('dotenv').config({ path: dotenvPath});
+const dotenv = require('dotenv').config({ path: dotenvPath});
 const env	= process.env.NODE_ENV || 'development';
 const dbConfig	= require(`../config/database`)[env];
 
-
+if (dotenv.error) {
+	return console.log(`.env file not found at '${dotenvPath}')}`);
+}
 const SequelizeAuto = require('sequelize-auto')
 
 // We don't want to populate every table from the database, just the ones we
