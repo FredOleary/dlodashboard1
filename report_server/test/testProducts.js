@@ -32,8 +32,8 @@ describe('Testing Products API', function () {
 						expect(res.body.products).to.be.an('array');
 						expect(res.body.products.length).to.be.equal(2);
 						expect(res.body.products[0].description).to.be.equal("Product-1");
-						console.log("Date SubString: " +res.body.products[0].updatedDate.substring(0, ("2018-01-01T").length));
-						expect(res.body.products[0].updatedDate).to.be.equal("2018-01-01T08:00:00.000Z");
+						// console.log("Date SubString: " +res.body.products[0].updatedDate.substring(0, ("2018-01-01T").length));
+						expect(res.body.products[0].updatedDate).substring(0, ("2018-01-01T").length).to.be.equal("2018-01-01T");
 						done(err);
 					});
 
